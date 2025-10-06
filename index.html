@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusCalc Pro - Ultimate Web Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
+</head>
+<body>
+    <!-- Premium Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-container">
+            <div class="holographic-loader">
+                <div class="hologram-circle">
+                    <div class="inner-ring"></div>
+                    <div class="middle-ring"></div>
+                    <div class="outer-ring"></div>
+                    <div class="core"></div>
+                </div>
+            </div>
+            <div class="loading-content">
+                <h1 class="brand-title">NexusCalc<span>Pro</span></h1>
+                <p class="loading-text">Initializing Advanced Calculation Matrix</p>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <span class="progress-text">0%</span>
+                </div>
+                <div class="system-status">
+                    <div class="status-item">
+                        <i class="fas fa-microchip"></i>
+                        <span>Math Processor: Online</span>
+                    </div>
+                    <div class="status-item">
+                        <i class="fas fa-brain"></i>
+                        <span>AI Assistant: Booting</span>
+                    </div>
+                    <div class="status-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Graph Engine: Ready</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Calculator Interface -->
+    <div id="calculator" class="hidden">
+        <!-- Header with Navigation -->
+        <header class="calculator-header">
+            <div class="header-left">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <span class="logo-text">NexusCalc<span>Pro</span></span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="mode-indicators">
+                    <div class="mode-indicator active" data-mode="standard">
+                        <i class="fas fa-calculator"></i>
+                        <span>Standard</span>
+                    </div>
+                    <div class="mode-indicator" data-mode="scientific">
+                        <i class="fas fa-flask"></i>
+                        <span>Scientific</span>
+                    </div>
+                    <div class="mode-indicator" data-mode="programmer">
+                        <i class="fas fa-code"></i>
+                        <span>Programmer</span>
+                    </div>
+                    <div class="mode-indicator" data-mode="graphing">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Graphing</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Calculator Container -->
+        <main class="calculator-main">
+            <!-- Display Section -->
+            <section class="display-section">
+                <div class="display-container">
+                    <div class="expression-display" id="expression">
+                        <span class="expression-text"></span>
+                    </div>
+                    <div class="result-display">
+                        <span class="result-text" id="result">0</span>
+                        <div class="result-actions">
+                            <button class="action-btn copy-btn" title="Copy Result" aria-label="Copy result to clipboard">
+                                <i class="far fa-copy"></i>
+                            </button>
+                            <button class="action-btn speak-btn" title="Speak Result" aria-label="Speak result">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Control Panel -->
+            <section class="control-panel">
+                <div class="control-tabs">
+                    <button class="control-tab active" data-tab="basic" aria-label="Basic operations">Basic</button>
+                    <button class="control-tab" data-tab="advanced" aria-label="Advanced operations">Advanced</button>
+                    <button class="control-tab" data-tab="functions" aria-label="Math functions">Functions</button>
+                    <button class="control-tab" data-tab="memory" aria-label="Memory operations">Memory</button>
+                    <button class="control-tab" data-tab="converter" aria-label="Unit converter">Converter</button>
+                </div>
+
+                <!-- Basic Operations -->
+                <div class="tab-content active" id="basic-tab">
+                    <div class="keypad-grid">
+                        <button class="calc-btn function memory-clear" data-action="mc" aria-label="Memory clear">MC</button>
+                        <button class="calc-btn function memory-recall" data-action="mr" aria-label="Memory recall">MR</button>
+                        <button class="calc-btn function memory-add" data-action="m+" aria-label="Memory add">M+</button>
+                        <button class="calc-btn function memory-subtract" data-action="m-" aria-label="Memory subtract">M-</button>
+                        <button class="calc-btn function clear" data-action="clear" aria-label="Clear">C</button>
+                        <button class="calc-btn function backspace" data-action="backspace" aria-label="Backspace">
+                            <i class="fas fa-backspace"></i>
+                        </button>
+                        <button class="calc-btn function percentage" data-action="percentage" aria-label="Percentage">%</button>
+                        <button class="calc-btn operator" data-action="divide" aria-label="Divide">÷</button>
+                        
+                        <button class="calc-btn number" data-value="7" aria-label="7">7</button>
+                        <button class="calc-btn number" data-value="8" aria-label="8">8</button>
+                        <button class="calc-btn number" data-value="9" aria-label="9">9</button>
+                        <button class="calc-btn operator" data-action="multiply" aria-label="Multiply">×</button>
+                        
+                        <button class="calc-btn number" data-value="4" aria-label="4">4</button>
+                        <button class="calc-btn number" data-value="5" aria-label="5">5</button>
+                        <button class="calc-btn number" data-value="6" aria-label="6">6</button>
+                        <button class="calc-btn operator" data-action="subtract" aria-label="Subtract">−</button>
+                        
+                        <button class="calc-btn number" data-value="1" aria-label="1">1</button>
+                        <button class="calc-btn number" data-value="2" aria-label="2">2</button>
+                        <button class="calc-btn number" data-value="3" aria-label="3">3</button>
+                        <button class="calc-btn operator" data-action="add" aria-label="Add">+</button>
+                        
+                        <button class="calc-btn number zero" data-value="0" aria-label="0">0</button>
+                        <button class="calc-btn number decimal" data-value="." aria-label="Decimal point">.</button>
+                        <button class="calc-btn equals" data-action="calculate" id="calculate-btn" aria-label="Equals">=</button>
+                    </div>
+                </div>
+
+                <!-- Advanced Operations -->
+                <div class="tab-content" id="advanced-tab">
+                    <div class="advanced-grid">
+                        <button class="calc-btn scientific" data-function="sin" aria-label="Sine">sin</button>
+                        <button class="calc-btn scientific" data-function="cos" aria-label="Cosine">cos</button>
+                        <button class="calc-btn scientific" data-function="tan" aria-label="Tangent">tan</button>
+                        <button class="calc-btn scientific" data-function="log" aria-label="Logarithm base 10">log</button>
+                        <button class="calc-btn scientific" data-function="ln" aria-label="Natural logarithm">ln</button>
+                        
+                        <button class="calc-btn scientific" data-function="sinh" aria-label="Hyperbolic sine">sinh</button>
+                        <button class="calc-btn scientific" data-function="cosh" aria-label="Hyperbolic cosine">cosh</button>
+                        <button class="calc-btn scientific" data-function="tanh" aria-label="Hyperbolic tangent">tanh</button>
+                        <button class="calc-btn scientific" data-function="exp" aria-label="Exponential">exp</button>
+                        <button class="calc-btn scientific" data-function="mod" aria-label="Modulo">mod</button>
+                        
+                        <button class="calc-btn scientific" data-function="sqrt" aria-label="Square root">√</button>
+                        <button class="calc-btn scientific" data-function="cube-root" aria-label="Cube root">∛</button>
+                        <button class="calc-btn scientific" data-function="power" aria-label="Square">x²</button>
+                        <button class="calc-btn scientific" data-function="cube" aria-label="Cube">x³</button>
+                        <button class="calc-btn scientific" data-function="power-y" aria-label="Power">x^y</button>
+                        
+                        <button class="calc-btn scientific" data-function="factorial" aria-label="Factorial">x!</button>
+                        <button class="calc-btn scientific" data-function="abs" aria-label="Absolute value">abs</button>
+                        <button class="calc-btn constant" data-value="pi" aria-label="Pi">π</button>
+                        <button class="calc-btn constant" data-value="e" aria-label="Euler's number">e</button>
+                        <button class="calc-btn constant" data-value="phi" aria-label="Golden ratio">φ</button>
+                    </div>
+                </div>
+
+                <!-- Function Operations -->
+                <div class="tab-content" id="functions-tab">
+                    <div class="functions-grid">
+                        <button class="calc-btn function-btn" data-function="derivative" aria-label="Derivative">d/dx</button>
+                        <button class="calc-btn function-btn" data-function="integral" aria-label="Integral">∫</button>
+                        <button class="calc-btn function-btn" data-function="limit" aria-label="Limit">lim</button>
+                        <button class="calc-btn function-btn" data-function="sum" aria-label="Summation">∑</button>
+                        <button class="calc-btn function-btn" data-function="product" aria-label="Product">∏</button>
+                        
+                        <button class="calc-btn matrix" data-function="matrix-add" aria-label="Matrix addition">M+</button>
+                        <button class="calc-btn matrix" data-function="matrix-multiply" aria-label="Matrix multiplication">M×</button>
+                        <button class="calc-btn matrix" data-function="determinant" aria-label="Determinant">det</button>
+                        <button class="calc-btn matrix" data-function="inverse" aria-label="Matrix inverse">inv</button>
+                        <button class="calc-btn matrix" data-function="transpose" aria-label="Matrix transpose">trans</button>
+                        
+                        <button class="calc-btn stats" data-function="mean" aria-label="Mean">mean</button>
+                        <button class="calc-btn stats" data-function="median" aria-label="Median">median</button>
+                        <button class="calc-btn stats" data-function="std-dev" aria-label="Standard deviation">σ</button>
+                        <button class="calc-btn stats" data-function="variance" aria-label="Variance">var</button>
+                        <button class="calc-btn stats" data-function="combinations" aria-label="Combinations">C(n,k)</button>
+                        
+                        <button class="calc-btn programming" data-function="and" aria-label="Bitwise AND">AND</button>
+                        <button class="calc-btn programming" data-function="or" aria-label="Bitwise OR">OR</button>
+                        <button class="calc-btn programming" data-function="xor" aria-label="Bitwise XOR">XOR</button>
+                        <button class="calc-btn programming" data-function="not" aria-label="Bitwise NOT">NOT</button>
+                        <button class="calc-btn programming" data-function="shift-left" aria-label="Shift left"><<</button>
+                        <button class="calc-btn programming" data-function="shift-right" aria-label="Shift right">>></button>
+                    </div>
+                </div>
+
+                <!-- Memory Operations -->
+                <div class="tab-content" id="memory-tab">
+                    <div class="memory-panel">
+                        <div class="memory-header">
+                            <h3>Memory Functions</h3>
+                            <div class="memory-indicator">
+                                <span>Memory: </span>
+                                <span id="memory-value">0</span>
+                            </div>
+                        </div>
+                        <div class="memory-grid">
+                            <button class="calc-btn memory" data-action="store" aria-label="Memory store">MS</button>
+                            <button class="calc-btn memory" data-action="recall" aria-label="Memory recall">MR</button>
+                            <button class="calc-btn memory" data-action="add-to" aria-label="Memory add">M+</button>
+                            <button class="calc-btn memory" data-action="subtract-from" aria-label="Memory subtract">M-</button>
+                            <button class="calc-btn memory" data-action="clear-memory" aria-label="Memory clear">MC</button>
+                        </div>
+                        <div class="memory-history">
+                            <h4>Calculation History</h4>
+                            <div class="history-list" id="history-list">
+                                <!-- History items will be populated here -->
+                            </div>
+                            <button class="clear-history-btn" id="clear-history" aria-label="Clear history">Clear History</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Converter Operations -->
+                <div class="tab-content" id="converter-tab">
+                    <div class="converter-panel">
+                        <div class="converter-type-selector">
+                            <select id="converter-type" aria-label="Select conversion type">
+                                <option value="currency">Currency</option>
+                                <option value="length">Length</option>
+                                <option value="weight">Weight</option>
+                                <option value="temperature">Temperature</option>
+                                <option value="area">Area</option>
+                                <option value="volume">Volume</option>
+                                <option value="time">Time</option>
+                                <option value="speed">Speed</option>
+                                <option value="digital">Digital Storage</option>
+                                <option value="angle">Angle</option>
+                            </select>
+                        </div>
+                        <div class="converter-inputs">
+                            <div class="converter-input-group">
+                                <input type="number" id="converter-from-value" value="1" step="any" aria-label="Value to convert">
+                                <select id="converter-from-unit" aria-label="Convert from unit"></select>
+                            </div>
+                            <div class="converter-swap">
+                                <button id="converter-swap-btn" aria-label="Swap units">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </button>
+                            </div>
+                            <div class="converter-input-group">
+                                <input type="number" id="converter-to-value" readonly aria-label="Converted value">
+                                <select id="converter-to-unit" aria-label="Convert to unit"></select>
+                            </div>
+                        </div>
+                        <button class="convert-btn" id="convert-btn" aria-label="Convert">Convert</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Graphing Panel -->
+            <section class="graphing-panel hidden" id="graphing-panel">
+                <div class="graphing-controls">
+                    <div class="graph-input-group">
+                        <input type="text" id="graph-function" placeholder="f(x) = x^2" aria-label="Function to graph">
+                        <button id="plot-graph" aria-label="Plot graph">Plot</button>
+                    </div>
+                    <div class="graph-options">
+                        <label>
+                            <input type="number" id="graph-x-min" value="-10" step="1" aria-label="X minimum">
+                            <span>X Min</span>
+                        </label>
+                        <label>
+                            <input type="number" id="graph-x-max" value="10" step="1" aria-label="X maximum">
+                            <span>X Max</span>
+                        </label>
+                        <label>
+                            <input type="number" id="graph-y-min" value="-10" step="1" aria-label="Y minimum">
+                            <span>Y Min</span>
+                        </label>
+                        <label>
+                            <input type="number" id="graph-y-max" value="10" step="1" aria-label="Y maximum">
+                            <span>Y Max</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="graph-container">
+                    <canvas id="graph-canvas" aria-label="Graph display"></canvas>
+                </div>
+            </section>
+
+            <!-- Programmer Panel -->
+            <section class="programmer-panel hidden" id="programmer-panel">
+                <div class="number-base-selector">
+                    <button class="base-btn active" data-base="dec" aria-label="Decimal mode">DEC</button>
+                    <button class="base-btn" data-base="hex" aria-label="Hexadecimal mode">HEX</button>
+                    <button class="base-btn" data-base="oct" aria-label="Octal mode">OCT</button>
+                    <button class="base-btn" data-base="bin" aria-label="Binary mode">BIN</button>
+                </div>
+                <div class="programmer-display">
+                    <div class="base-display" id="base-display">
+                        <span class="base-value" id="dec-value">0</span>
+                        <span class="base-value hidden" id="hex-value">0</span>
+                        <span class="base-value hidden" id="oct-value">0</span>
+                        <span class="base-value hidden" id="bin-value">0</span>
+                    </div>
+                </div>
+                <div class="programmer-keypad">
+                    <div class="programmer-row">
+                        <button class="calc-btn programming" data-value="A" aria-label="A">A</button>
+                        <button class="calc-btn programming" data-value="B" aria-label="B">B</button>
+                        <button class="calc-btn programming" data-value="C" aria-label="C">C</button>
+                        <button class="calc-btn programming" data-value="D" aria-label="D">D</button>
+                        <button class="calc-btn programming" data-value="E" aria-label="E">E</button>
+                        <button class="calc-btn programming" data-value="F" aria-label="F">F</button>
+                    </div>
+                    <div class="programmer-row">
+                        <button class="calc-btn programming" data-function="and" aria-label="Bitwise AND">AND</button>
+                        <button class="calc-btn programming" data-function="or" aria-label="Bitwise OR">OR</button>
+                        <button class="calc-btn programming" data-function="xor" aria-label="Bitwise XOR">XOR</button>
+                        <button class="calc-btn programming" data-function="not" aria-label="Bitwise NOT">NOT</button>
+                        <button class="calc-btn programming" data-function="shift-left" aria-label="Shift left"><<</button>
+                        <button class="calc-btn programming" data-function="shift-right" aria-label="Shift right">>></button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer with Additional Controls -->
+        <footer class="calculator-footer">
+            <div class="footer-controls">
+                <button class="footer-btn voice-control" id="voice-control" aria-label="Voice control">
+                    <i class="fas fa-microphone"></i>
+                    <span>Voice Control</span>
+                </button>
+                <button class="footer-btn theme-switcher" id="theme-switcher" aria-label="Change theme">
+                    <i class="fas fa-palette"></i>
+                    <span>Theme</span>
+                </button>
+                <button class="footer-btn settings" id="settings-btn" aria-label="Settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </button>
+                <button class="footer-btn help" id="help-btn" aria-label="Help">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help</span>
+                </button>
+            </div>
+            <copyright class="footer-text" style="font-weight: bold; font-size: medium;">
+                &copy; 2025 NexusCalc Pro. All rights reserved.
+            </copyright>
+        </footer>
+    </div>
+
+    <!-- Theme Selection Modal -->
+    <div id="theme-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Select Theme</h2>
+                <button class="close-modal" id="close-theme" aria-label="Close theme selection">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="theme-options">
+                <div class="theme-option active" data-theme="dark">
+                    <div class="theme-preview dark-theme"></div>
+                    <span>Quantum Dark</span>
+                </div>
+                <div class="theme-option" data-theme="light">
+                    <div class="theme-preview light-theme"></div>
+                    <span>Crystal Light</span>
+                </div>
+                <div class="theme-option" data-theme="blue">
+                    <div class="theme-preview blue-theme"></div>
+                    <span>Nexus Blue</span>
+                </div>
+                <div class="theme-option" data-theme="purple">
+                    <div class="theme-preview purple-theme"></div>
+                    <span>Cosmic Purple</span>
+                </div>
+                <div class="theme-option" data-theme="green">
+                    <div class="theme-preview green-theme"></div>
+                    <span>Matrix Green</span>
+                </div>
+                <div class="theme-option" data-theme="orange">
+                    <div class="theme-preview orange-theme"></div>
+                    <span>Solar Orange</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Calculator Settings</h2>
+                <button class="close-modal" id="close-settings" aria-label="Close settings">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="settings-options">
+                <div class="setting-group">
+                    <h3>Display Options</h3>
+                    <label class="setting-item">
+                        <input type="checkbox" id="sound-effects" checked>
+                        <span class="checkmark"></span>
+                        Sound Effects
+                    </label>
+                    <label class="setting-item">
+                        <input type="checkbox" id="animations" checked>
+                        <span class="checkmark"></span>
+                        Animations
+                    </label>
+                    <label class="setting-item">
+                        <input type="checkbox" id="scientific-notation">
+                        <span class="checkmark"></span>
+                        Scientific Notation
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <h3>Calculation Options</h3>
+                    <label class="setting-item">
+                        <input type="number" id="decimal-places" value="6" min="0" max="15">
+                        <span>Decimal Places</span>
+                    </label>
+                    <label class="setting-item">
+                        <select id="angle-unit">
+                            <option value="deg">Degrees</option>
+                            <option value="rad">Radians</option>
+                            <option value="grad">Gradians</option>
+                        </select>
+                        <span>Angle Unit</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Control Interface -->
+    <div id="voice-interface" class="hidden">
+        <div class="voice-container">
+            <div class="voice-animation">
+                <div class="voice-pulse"></div>
+                <i class="fas fa-microphone"></i>
+            </div>
+            <p class="voice-status">Listening...</p>
+            <div class="voice-fallback hidden" id="voice-fallback">
+                <textarea placeholder="Type your command here..." id="voice-text-input"></textarea>
+                <button id="voice-text-submit">Submit Command</button>
+            </div>
+            <button class="voice-close" id="voice-close" aria-label="Close voice control">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Background Elements for 3D Effect -->
+    <div class="bg-elements">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+        <div class="particles-container" id="particles"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
